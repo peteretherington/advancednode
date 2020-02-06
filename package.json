@@ -18,7 +18,7 @@
 		"pug": "^2.0.4"
 	},
 	"engines": {
-		"node": "4.4.3"
+		"node": "12.15.1"
 	},
 	"repository": {
 		"type": "git",
