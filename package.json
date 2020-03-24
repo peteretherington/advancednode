@@ -12,9 +12,11 @@
 		"cors": "^2.8.1",
 		"dotenv": "^8.2.0",
 		"express": "^4.14.1",
+		"express-session": "^1.17.0",
 		"helmet": "^3.4.0",
 		"mongodb": "^3.5.2",
 		"nodemon": "^2.0.2",
+		"passport": "^0.4.1",
 		"pug": "^2.0.4"
 	},
 	"engines": {
