@@ -5,6 +5,7 @@ require('dotenv').config();
 const bodyParser = require('body-parser');
 const express = require('express');
 const fccTesting = require('./freeCodeCamp/fcctesting.js');
+const mongo = require('mongodb').MongoClient;
 const ObjectID = require('mongodb').ObjectID;
 const passport = require('passport');
 const session = require('express-session');
@@ -30,22 +31,25 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-passport.serializeUser((user, done) => {
-	done(null, user._id);
-});
+mongo.connect(process.env.DATABASE, { useUnifiedTopology: true }, (err, db) => {
+	if (err) throw new Error(err);
+	else {
+		passport.serializeUser((user, done) => {
+			done(null, user._id);
+		});
 
-passport.deserializeUser((id, done) => {
-	// NEEDS MONGODB SETUP BEFORE USE
-	// db.collection('users').findOne({ _id: new ObjectID(id) }, (err, doc) => {
-	// 	done(null, doc);
-	// });
-	done(null, null);
-});
+		passport.deserializeUser((id, done) => {
+			db.collection('users').findOne({ _id: new ObjectID(id) }, (err, doc) => {
+				done(null, doc);
+			});
+		});
 
-app.route('/').get((req, res) => {
-	res.render(process.cwd() + '/views/pug/index', { title: 'Hello', message: 'Please login' });
-});
+		app.route('/').get((req, res) => {
+			res.render(process.cwd() + '/views/pug/index', { title: 'Hello', message: 'Please login' });
+		});
 
-app.listen(process.env.PORT || 3000, () => {
-	console.log('Listening on port ' + process.env.PORT);
+		app.listen(process.env.PORT || 3000, () => {
+			console.log('Listening on port ' + process.env.PORT);
+		});
+	}
 });
