@@ -2,11 +2,12 @@
 
 require('dotenv').config();
 
-const express = require('express');
 const bodyParser = require('body-parser');
+const express = require('express');
 const fccTesting = require('./freeCodeCamp/fcctesting.js');
-const session = require('express-session');
+const ObjectID = require('mongodb').ObjectID;
 const passport = require('passport');
+const session = require('express-session');
 
 const app = express();
 
@@ -22,12 +23,24 @@ app.use(
 	session({
 		secret: process.env.SESSION_SECRET,
 		resave: true,
-		saveUninitialized: true
+		saveUninitialized: true,
 	})
 );
 
 app.use(passport.initialize());
 app.use(passport.session());
+
+passport.serializeUser((user, done) => {
+	done(null, user._id);
+});
+
+passport.deserializeUser((id, done) => {
+	// NEEDS MONGODB SETUP BEFORE USE
+	// db.collection('users').findOne({ _id: new ObjectID(id) }, (err, doc) => {
+	// 	done(null, doc);
+	// });
+	done(null, null);
+});
 
 app.route('/').get((req, res) => {
 	res.render(process.cwd() + '/views/pug/index', { title: 'Hello', message: 'Please login' });
