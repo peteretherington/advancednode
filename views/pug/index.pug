@@ -14,29 +14,29 @@ html
     
     if showLogin
       hr
-        h3 Login Form
-        form(action='/login', method='post')
-          div.field
-            label Username:
-            input(type='text', name='username')
-          div.field
-            label Password:
-            input(type='password', name='password')
-          div.field
-            input(type='submit', value='Log In')
+      h3 Login Form
+      form(action='/login', method='post')
+        div.field
+          label Username:
+          input(type='text', name='username')
+        div.field
+          label Password:
+          input(type='password', name='password')
+        div.field
+          input(type='submit', value='Log In')
           
     if showRegistration
       hr  
-        h3 Registration Form
-        form(action='/register', method='post')
-          div
-            label Username:
-            input(type='text', name='username')
-          div
-            label Password:
-            input(type='password', name='password')
-          div
-            input(type='submit', value='Register')
+      h3 Registration Form
+      form(action='/register', method='post')
+        div
+          label Username:
+          input(type='text', name='username')
+        div
+          label Password:
+          input(type='password', name='password')
+        div
+          input(type='submit', value='Register')
       
         
     script(src='https://code.jquery.com/jquery-2.2.1.min.js', integrity='sha256-gvQgAFzTH6trSrAWoH1iPo9Xc96QxSZ3feW6kem+O00=', crossorigin='anonymous')
