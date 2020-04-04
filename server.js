@@ -5,6 +5,7 @@ if (process.env.NODE_ENV !== 'production') require('dotenv').config();
 const bodyParser = require('body-parser');
 const express = require('express');
 const fccTesting = require('./freeCodeCamp/fcctesting.js');
+const LocalStrategy = require('passport-local');
 const mongo = require('mongodb').MongoClient;
 const ObjectID = require('mongodb').ObjectID;
 const passport = require('passport');
@@ -43,6 +44,18 @@ mongo.connect(process.env.DATABASE, { useUnifiedTopology: true }, (err, db) => {
 				done(null, doc);
 			});
 		});
+
+		passport.use(
+			new LocalStrategy(function (username, password, done) {
+				db.collection('users').findOne({ username }, function (err, user) {
+					console.log(`User ${username} tried to login`);
+					if (err) return done(err);
+					if (!user) return done(null, false);
+					if (password !== user.password) return done(null, false);
+					return done(null, user);
+				});
+			})
+		);
 
 		app.route('/').get((req, res) => {
 			res.render(process.cwd() + '/views/pug/index', { title: 'Hello', message: 'Please login' });
