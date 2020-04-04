@@ -9,25 +9,29 @@ html
     link(rel='stylesheet', href='/public/style.css')
   body
     h1.border.center FCC Advanced Node and Express
-    h2.center#pug-success-message= title
+    h2.center#pug-success-message
+    | Looks like this page is being rendered from Pug into HTML!
+    | #{title}
     p#pug-variable= message
+    
+    
     
     if showLogin
       hr
-      h3 Login Form
+      p Login Form
       form(action='/login', method='post')
-        div.field
+        div
           label Username:
           input(type='text', name='username')
-        div.field
+        div
           label Password:
           input(type='password', name='password')
-        div.field
+        div
           input(type='submit', value='Log In')
           
     if showRegistration
-      hr  
-      h3 Registration Form
+      hr
+      p Registration Form
       form(action='/register', method='post')
         div
           label Username:
