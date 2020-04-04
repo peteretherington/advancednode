@@ -67,6 +67,10 @@ mongo.connect(process.env.DATABASE, { useUnifiedTopology: true }, (err, client) 
 			res.redirect('/profile');
 		});
 
+		app.route('/profile').get(function (req, res) {
+			res.render(process.cwd() + '/views/pug/profile');
+		});
+
 		app.listen(process.env.PORT || 3000, () => {
 			console.log('Listening on port ' + process.env.PORT);
 		});
