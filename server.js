@@ -60,7 +60,7 @@ mongo.connect(process.env.DATABASE, { useUnifiedTopology: true }, (err, client) 
 		);
 
 		app.route('/').get((req, res) => {
-			res.render(process.cwd() + '/views/pug/index', { title: 'Home Page', message: 'Please login', showLogin: true });
+			res.render(process.cwd() + '/views/pug/index', { title: 'Hello', message: 'Please login', showLogin: true });
 		});
 
 		app.route('/login').post(passport.authenticate('local', { failureRedirect: '/' }), function (res, req) {
