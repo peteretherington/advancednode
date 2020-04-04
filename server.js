@@ -32,9 +32,11 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-mongo.connect(process.env.DATABASE, { useUnifiedTopology: true }, (err, db) => {
+mongo.connect(process.env.DATABASE, { useUnifiedTopology: true }, (err, client) => {
 	if (err) throw new Error(err);
 	else {
+		const db = client.db('advancednode-fcc');
+
 		passport.serializeUser((user, done) => {
 			done(null, user._id);
 		});
@@ -58,7 +60,11 @@ mongo.connect(process.env.DATABASE, { useUnifiedTopology: true }, (err, db) => {
 		);
 
 		app.route('/').get((req, res) => {
-			res.render(process.cwd() + '/views/pug/index', { title: 'Hello', message: 'Please login' });
+			res.render(process.cwd() + '/views/pug/index', { title: 'Welcome', message: 'Please login', showLogin: true });
+		});
+
+		app.route('/login').post(passport.authenticate('local', { failureRedirect: '/' }), function (res, req) {
+			res.redirect('/profile');
 		});
 
 		app.listen(process.env.PORT || 3000, () => {
