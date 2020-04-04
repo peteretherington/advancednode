@@ -13,7 +13,7 @@ html
     p#pug-variable= message
     
     if showLogin
-      div.container
+      hr
         h3 Login Form
         form(action='/login', method='post')
           div.field
@@ -26,7 +26,7 @@ html
             input(type='submit', value='Log In')
           
     if showRegistration
-      div.container  
+      hr  
         h3 Registration Form
         form(action='/register', method='post')
           div
