@@ -53,16 +53,17 @@ mongo.connect(process.env.DATABASE, { useUnifiedTopology: true }, (err, client) 
 					console.log(`User ${username} tried to login`);
 					if (err) return done(err);
 					if (!user) return done(null, false);
-					if (password !== user.password) return done(null, false);
+					if (password !== user.password) {
+						console.log('wrong password');
+						return done(null, false);
+					}
 					return done(null, user);
 				});
 			})
 		);
 
 		function ensureAuthenticated(req, res, next) {
-			if (req.isAuthenticated()) {
-				return next();
-			}
+			if (req.isAuthenticated()) return next();
 			res.redirect('/');
 		}
 
@@ -70,12 +71,12 @@ mongo.connect(process.env.DATABASE, { useUnifiedTopology: true }, (err, client) 
 			res.render(process.cwd() + '/views/pug/index', { title: 'Home page', message: 'login', showLogin: true });
 		});
 
-		app.route('/login').post(passport.authenticate('local', { failureRedirect: '/' }), function (res, req) {
-			res.redirect('/profile');
-		});
+		app.route('/login').post(passport.authenticate('local', { successRedirect: '/profile', failureRedirect: '/' }));
 
 		app.route('/profile').get(ensureAuthenticated, function (req, res) {
-			res.render(process.cwd() + '/views/pug/profile');
+			const capitalize = (string) => string[0].toUpperCase() + string.slice(1);
+			const username = capitalize(req.user.username);
+			res.render(process.cwd() + '/views/pug/profile', { username });
 		});
 
 		app.listen(process.env.PORT || 3000, () => {
