@@ -59,7 +59,7 @@ mongo.connect(process.env.DATABASE, { useUnifiedTopology: true }, (err, client) 
 			})
 		);
 
-		function ensureAuthentication(req, res, next) {
+		function ensureAuthenticated(req, res, next) {
 			if (req.isAuthenticated()) return next();
 			res.redirect('/');
 		}
@@ -72,7 +72,7 @@ mongo.connect(process.env.DATABASE, { useUnifiedTopology: true }, (err, client) 
 			res.redirect('/profile');
 		});
 
-		app.route('/profile').get(ensureAuthentication, function (req, res) {
+		app.route('/profile').get(ensureAuthenticated, function (req, res) {
 			res.render(process.cwd() + '/views/pug/profile');
 		});
 
