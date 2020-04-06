@@ -23,7 +23,7 @@ form {
 	margin: 0;
 }
 
-.field {
+form div {
 	display: flex;
 	flex-direction: column;
 	padding: 1em 0;

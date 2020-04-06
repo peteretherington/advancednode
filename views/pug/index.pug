@@ -20,26 +20,26 @@ html
       hr
       p Login Form
       form(action='/login', method='post')
-        div.field
+        div
           label Username:
           input(type='text', name='username')
-        div.field
+        div
           label Password:
           input(type='password', name='password')
-        div.field
+        div
           input(type='submit', value='Log In')
           
     if showRegistration
       hr
       p Registration Form
       form(action='/register', method='post')
-        div.field
+        div
           label Username:
           input(type='text', name='username')
-        div.field
+        div
           label Password:
           input(type='password', name='password')
-        div.field
+        div
           input(type='submit', value='Register')
       
         
