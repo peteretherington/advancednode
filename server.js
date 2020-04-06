@@ -60,7 +60,9 @@ mongo.connect(process.env.DATABASE, { useUnifiedTopology: true }, (err, client) 
 		);
 
 		function ensureAuthenticated(req, res, next) {
-			if (req.isAuthenticated()) return next();
+			if (req.isAuthenticated()) {
+				return next();
+			}
 			res.redirect('/');
 		}
 
