@@ -59,6 +59,11 @@ mongo.connect(process.env.DATABASE, { useUnifiedTopology: true }, (err, client) 
 			})
 		);
 
+		function ensureAuthentication(req, res, next) {
+			if (req.isAuthenticated()) return next();
+			res.redirect('/');
+		}
+
 		app.route('/').get((req, res) => {
 			res.render(process.cwd() + '/views/pug/index', { title: 'Hello', message: 'login', showLogin: true });
 		});
@@ -67,7 +72,7 @@ mongo.connect(process.env.DATABASE, { useUnifiedTopology: true }, (err, client) 
 			res.redirect('/profile');
 		});
 
-		app.route('/profile').get(function (req, res) {
+		app.route('/profile').get(ensureAuthentication, function (req, res) {
 			res.render(process.cwd() + '/views/pug/profile');
 		});
 
