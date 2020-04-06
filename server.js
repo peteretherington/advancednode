@@ -52,10 +52,9 @@ mongo.connect(process.env.DATABASE, { useUnifiedTopology: true }, (err, client) 
 				db.collection('users').findOne({ username }, function (err, user) {
 					console.log(`User ${username} tried to login`);
 					if (err) return done(err);
-					if (!user) return done(null, false);
+					if (!user) return done(null, false, { message: 'Incorrect username.' });
 					if (password !== user.password) {
-						console.log('wrong password');
-						return done(null, false);
+						return done(null, false, { message: 'Incorrect password.' });
 					}
 					return done(null, user);
 				});
@@ -72,6 +71,11 @@ mongo.connect(process.env.DATABASE, { useUnifiedTopology: true }, (err, client) 
 		});
 
 		app.route('/login').post(passport.authenticate('local', { successRedirect: '/profile', failureRedirect: '/' }));
+
+		app.get('/logout', function (req, res) {
+			req.logout();
+			res.redirect('/');
+		});
 
 		app.route('/profile').get(ensureAuthenticated, function (req, res) {
 			const capitalize = (string) => string[0].toUpperCase() + string.slice(1);
