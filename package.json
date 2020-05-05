@@ -8,6 +8,7 @@
 		"start": "nodemon server.js"
 	},
 	"dependencies": {
+		"bcrypt": "^4.0.1",
 		"body-parser": "^1.16.0",
 		"cors": "^2.8.1",
 		"dotenv": "^8.2.0",

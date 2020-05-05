@@ -3,6 +3,7 @@
 if (process.env.NODE_ENV !== 'production') require('dotenv').config();
 
 const bodyParser = require('body-parser');
+const bcrypt = require('bcrypt');
 const express = require('express');
 const fccTesting = require('./freeCodeCamp/fcctesting.js');
 const LocalStrategy = require('passport-local');
@@ -53,7 +54,7 @@ mongo.connect(process.env.DATABASE, { useUnifiedTopology: true }, (err, client) 
 					console.log(`User ${username} tried to login`);
 					if (err) return done(err);
 					if (!user) return done(null, false, { message: 'Incorrect username.' });
-					if (password !== user.password) {
+					if (!bcrypt.compareSync(password, user.password)) {
 						return done(null, false, { message: 'Incorrect password.' });
 					}
 					return done(null, user);
@@ -86,7 +87,7 @@ mongo.connect(process.env.DATABASE, { useUnifiedTopology: true }, (err, client) 
 						db.collection('users').insertOne(
 							{
 								username: req.body.username,
-								password: req.body.password,
+								password: bcrypt.hashSync(req.body.password, 12),
 							},
 							(err, doc) => {
 								if (err) {
