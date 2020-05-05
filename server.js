@@ -78,9 +78,7 @@ mongo.connect(process.env.DATABASE, { useUnifiedTopology: true }, (err, client) 
 		});
 
 		app.route('/profile').get(ensureAuthenticated, function (req, res) {
-			const capitalize = (string) => string[0].toUpperCase() + string.slice(1);
-			const username = capitalize(req.user.username);
-			res.render(process.cwd() + '/views/pug/profile', { username });
+			res.render(process.cwd() + '/views/pug/profile', { username: req.user.username });
 		});
 
 		app.listen(process.env.PORT || 3000, () => {
